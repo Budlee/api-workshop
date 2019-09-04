@@ -3,8 +3,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.1.2.RELEASE'
-        classpath "au.com.dius:pact-jvm-provider-gradle_2.12:3.5.23"
+
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.7.RELEASE"
+        // remove::start[]
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.1.2.RELEASE"
+        classpath "org.springframework.cloud:spring-cloud-contract-pact:2.1.2.RELEASE"
+//        classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.1.2.RELEASE'
+//        classpath "au.com.dius:pact-jvm-provider-gradle_2.12:3.5.23"
+//        classpath "org.springframework.cloud:spring-cloud-contract-pact:2.1.2.RELEASE"
     }
 }
 
@@ -31,7 +37,7 @@ ext {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+//    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
     testCompile "au.com.dius:pact-jvm-consumer-junit_2.12:3.5.13"
 }
@@ -42,16 +48,35 @@ dependencyManagement {
     }
 }
 
+//contracts {
+//    baseClassForTests "com.budlee.apiworkshop.contract.ContractBase"
+//}
+
+//apply plugin: 'au.com.dius.pact'
+//new File("${project.rootDir}/target/pacts").mkdirs()
+//
+//pact {
+//    publish {
+//        pactBrokerUrl = "http://localhost:8085"
+//        pactDirectory = "${project.rootDir}/target/pacts"
+//    }
+//}
+
 contracts {
-    baseClassForTests "com.budlee.apiworkshop.contract.ContractBase"
-}
-
-apply plugin: 'au.com.dius.pact'
-new File("${project.rootDir}/target/pacts").mkdirs()
-
-pact {
-    publish {
-        pactBrokerUrl = "http://localhost:8085"
-        pactDirectory = "${project.rootDir}/target/pacts"
+    // When + is passed, a latest tag will be applied when fetching pacts
+    contractDependency {
+        stringNotation = "${project.group}.${project.name}:todo-api-producer-pact:+"
     }
+    contractRepository {
+        repositoryUrl = "pact://http://localhost:8085"
+    }
+    // The mode can't be classpath
+    contractsMode = "REMOTE"
+    // Base class mappings etc.
+//    baseClassForTests = "com.budlee.apiworkshop:TodoBaseRest"
 }
+
+
+//http://localhost:8085/pacts/provider/todo-api-consumer-pact/latest/latest
+//http://localhost:8085/pacts/provider/todo-api-consumer-pact/latest
+//http://localhost:8085/pacts/provider/todo-api-consumer-pact/latest

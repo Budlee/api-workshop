@@ -17,10 +17,10 @@ public class TestTodosControllerShould {
 
     @Rule
     public PactProviderRuleMk2 mockProvider =
-            new PactProviderRuleMk2("com.budlee.apiworkshop:todo-api-producer-pact", "localhost", 8083, this);
+            new PactProviderRuleMk2("todo-api-producer-pact", "localhost", 8083, this);
 
 
-    @Pact(consumer = "com.budlee.apiworkshop:todo-api-consumer-pact")
+    @Pact(consumer = "todo-api-consumer-pact")
     public RequestResponsePact beerNotOk(PactDslWithProvider builder) {
         return builder.
                 given("")
@@ -44,7 +44,7 @@ public class TestTodosControllerShould {
 
     @Test
     @PactVerification
-    public void runTestBeer() {
+    public void runUpdateTodo() {
 
 //        this.controller.createNewTodo(new Todo("Make the bed"));
 
