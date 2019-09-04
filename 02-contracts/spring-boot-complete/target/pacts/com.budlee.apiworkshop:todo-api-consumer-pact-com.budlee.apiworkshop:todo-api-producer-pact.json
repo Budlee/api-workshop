@@ -1,9 +1,9 @@
 {
     "provider": {
-        "name": "todo-api-producer-pact"
+        "name": "com.budlee.apiworkshop:todo-api-producer-pact"
     },
     "consumer": {
-        "name": "todo-api-consumer-pact"
+        "name": "com.budlee.apiworkshop:todo-api-consumer-pact"
     },
     "interactions": [
         {
