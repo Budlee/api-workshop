@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.1.2.RELEASE'
+        classpath "au.com.dius:pact-jvm-provider-gradle_2.12:3.5.23"
     }
 }
 
@@ -32,6 +33,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+    testCompile "au.com.dius:pact-jvm-consumer-junit_2.12:3.5.13"
 }
 
 dependencyManagement {
@@ -42,4 +44,14 @@ dependencyManagement {
 
 contracts {
     baseClassForTests "com.budlee.apiworkshop.contract.ContractBase"
+}
+
+apply plugin: 'au.com.dius.pact'
+new File("${project.rootDir}/target/pacts").mkdirs()
+
+pact {
+    publish {
+        pactBrokerUrl = "http://localhost:8085"
+        pactDirectory = "${project.rootDir}/target/pacts"
+    }
 }
